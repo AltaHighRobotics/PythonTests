@@ -31,34 +31,34 @@ kBRTurnID = 8
 
 # Turn PID % FF
 # Front Left
-kTurnFLP = 1
+kTurnFLP = 10
 kTurnFLI = 0
 kTurnFLD = 0
-kTurnFLS = 1
-kTrunFLV = .5
+kTurnFLS = 0
+kTrunFLV = 0
 
 # Front Right
-kTurnFRP = 1
+kTurnFRP = 10
 kTurnFRI = 0
 kTurnFRD = 0
-kTurnFRS = 1
-kTrunFRV = .5
+kTurnFRS = 0
+kTrunFRV = 0
 
 # Back Left
-kTurnBLP = 1
+kTurnBLP = 10
 kTurnBLI = 0
 kTurnBLD = 0
-kTurnBLS = 1
-kTrunBLV = .5
+kTurnBLS = 0
+kTrunBLV = 0
 
 # Back Right
-kTurnBRP = 1
+kTurnBRP = 10
 kTurnBRI = 0
 kTurnBRD = 0
-kTurnBRS = 1
-kTrunBRV = .5
+kTurnBRS = 0
+kTrunBRV = 0
 
 # Swerve
 kModuleMaxAngularVelocity = math.pi
 kModuleMaxAngularAcceleration = math.tau
-kSwerveTurnGearRatio = 1
+kSwerveTurnGearRatio = 1/(11.3142 * 3)

@@ -66,7 +66,7 @@ class SwerveDrive(Subsystem):
             wpimath.kinematics.ChassisSpeeds.discretize(
                 (
                     wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(
-                        xSpeed, ySpeed, rot, self.gyro.getRotation2d()
+                        xSpeed, ySpeed, rot, -self.gyro.getRotation2d()
                     )
                     if fieldRelative
                     else wpimath.kinematics.ChassisSpeeds(xSpeed, ySpeed, rot)
@@ -79,8 +79,8 @@ class SwerveDrive(Subsystem):
         )
         self.frontLeft.setDesiredState(swerveModuleStates[0])
         self.frontRight.setDesiredState(swerveModuleStates[1])
-        self.backLeft.setDesiredState(swerveModuleStates[2])
-        self.backRight.setDesiredState(swerveModuleStates[3])
+        #self.backLeft.setDesiredState(swerveModuleStates[2])
+        #self.backRight.setDesiredState(swerveModuleStates[3])
 
     def setMaxOutput(self, maxOutput):
         self.maxOut = maxOutput

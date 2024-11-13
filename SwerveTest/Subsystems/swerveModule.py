@@ -16,7 +16,7 @@ kModuleMaxAngularAcceleration = math.tau
 
 class SwerveModule:
     def __init__(self, driveid, steerid, kP, kI, kD, kS, kV):
-        self.drive = ctre.WPI_VictorSPX(driveid)
+        self.drive = ctre.WPI_TalonSRX(driveid)
         self.turn = rev.CANSparkMax(steerid, rev.CANSparkLowLevel.MotorType.kBrushless)
         self.turnEncoder = self.turn.getEncoder()
         self.turningPIDController = wpimath.controller.ProfiledPIDController(
