@@ -5,6 +5,7 @@ import wpimath.geometry
 import wpimath.kinematics
 from subsystems.swerveModule import SwerveModule
 import navx
+import ntcore
 
 class SwerveDrive(Subsystem):
     """
@@ -19,10 +20,14 @@ class SwerveDrive(Subsystem):
         self.backLeftLocation = wpimath.geometry.Translation2d(-constants.kSwerveModCtrToCtr/2, constants.kSwerveModCtrToCtr/2)
         self.backRightLocation = wpimath.geometry.Translation2d(-constants.kSwerveModCtrToCtr/2, -constants.kSwerveModCtrToCtr/2)
 
-        self.frontLeft = SwerveModule(constants.kFLDriveID, constants.kFLTurnID, constants.kTurnFLP, constants.kTurnFLI, constants.kTurnFLD, constants.kTurnFLS, constants.kTrunFLV)
-        self.frontRight = SwerveModule(constants.kFRDriveID, constants.kFRTurnID, constants.kTurnFRP, constants.kTurnFRI, constants.kTurnFRD, constants.kTurnFRS, constants.kTrunFRV)
-        self.backLeft = SwerveModule(constants.kBLDriveID, constants.kBLTurnID, constants.kTurnBLP, constants.kTurnBLI, constants.kTurnBLD, constants.kTurnBLS, constants.kTrunBLV)
-        self.backRight = SwerveModule(constants.kBRDriveID, constants.kBRTurnID, constants.kTurnBRP, constants.kTurnBRI, constants.kTurnBRD, constants.kTurnBRS, constants.kTrunBRV)
+        self.frontLeft = SwerveModule(constants.kFLDriveID, constants.kFLTurnID,
+                                      constants.kTurnFLP, constants.kTurnFLI, constants.kTurnFLD)
+        self.frontRight = SwerveModule(constants.kFRDriveID, constants.kFRTurnID,
+                                       constants.kTurnFRP, constants.kTurnFRI, constants.kTurnFRD)
+        self.backLeft = SwerveModule(constants.kBLDriveID, constants.kBLTurnID,
+                                     constants.kTurnBLP, constants.kTurnBLI, constants.kTurnBLD)
+        self.backRight = SwerveModule(constants.kBRDriveID, constants.kBRTurnID,
+                                      constants.kTurnBRP, constants.kTurnBRI, constants.kTurnBRD)
         
         self.maxOut = .75
 
@@ -38,6 +43,11 @@ class SwerveDrive(Subsystem):
         )
 
         self.gyro.reset()
+        nt = ntcore.NetworkTableInstance.getDefault()
+
+        # Start publishing an array of module states with the "/SwerveStates" key
+        topic = nt.getStructArrayTopic("/SwerveStates", wpimath.kinematics.SwerveModuleState)
+        self.pub = topic.publish()
 
     def drive(
         self,
@@ -63,24 +73,20 @@ class SwerveDrive(Subsystem):
                 xSpeed, ySpeed = -ySpeed, xSpeed                                                
 
         swerveModuleStates = self.kinematics.toSwerveModuleStates(
-            wpimath.kinematics.ChassisSpeeds.discretize(
-                (
-                    wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(
-                        xSpeed, ySpeed, rot, -self.gyro.getRotation2d()
-                    )
-                    if fieldRelative
-                    else wpimath.kinematics.ChassisSpeeds(xSpeed, ySpeed, rot)
-                ),
-                0.02
+            wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(
+                xSpeed, ySpeed, rot, -self.gyro.getRotation2d()
             )
+            if fieldRelative
+            else wpimath.kinematics.ChassisSpeeds(xSpeed, ySpeed, rot)
         )
-        wpimath.kinematics.SwerveDrive4Kinematics.desaturateWheelSpeeds(
-            swerveModuleStates, self.maxOut/0.082 # 1/0.082 gives a maximum output of 1 for the drive controller's set() function
-        )
+
+        self.pub.set([swerveModuleStates[0],swerveModuleStates[1],swerveModuleStates[2],swerveModuleStates[3]])
+        #self.pub.set([wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[0], self.frontLeft.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[1], self.frontRight.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[2], self.backLeft.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[3], self.backRight.getEncoder())])
+
         self.frontLeft.setDesiredState(swerveModuleStates[0])
         self.frontRight.setDesiredState(swerveModuleStates[1])
-        #self.backLeft.setDesiredState(swerveModuleStates[2])
-        #self.backRight.setDesiredState(swerveModuleStates[3])
+        self.backLeft.setDesiredState(swerveModuleStates[2])
+        self.backRight.setDesiredState(swerveModuleStates[3])
 
     def setMaxOutput(self, maxOutput):
         self.maxOut = maxOutput

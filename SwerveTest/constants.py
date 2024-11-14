@@ -34,29 +34,21 @@ kBRTurnID = 8
 kTurnFLP = 10
 kTurnFLI = 0
 kTurnFLD = 0
-kTurnFLS = 0
-kTrunFLV = 0
 
 # Front Right
 kTurnFRP = 10
 kTurnFRI = 0
 kTurnFRD = 0
-kTurnFRS = 0
-kTrunFRV = 0
 
 # Back Left
 kTurnBLP = 10
 kTurnBLI = 0
 kTurnBLD = 0
-kTurnBLS = 0
-kTrunBLV = 0
 
 # Back Right
 kTurnBRP = 10
 kTurnBRI = 0
 kTurnBRD = 0
-kTurnBRS = 0
-kTrunBRV = 0
 
 # Swerve
 kModuleMaxAngularVelocity = math.pi
