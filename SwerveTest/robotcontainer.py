@@ -30,12 +30,12 @@ class RobotContainer:
         # self.driverController = wpilib.XboxController(constants.kDriverControllerPort)
         self.driverController = wpilib.Joystick(constants.kDriverControllerPort)
 
-        # The robot's subsystems        
-        # State
-        self.state = State()
-        
+        # The robot's subsystems                
         # Drive
         self.drive = SwerveDrive()
+
+        # State
+        self.state = State(self.drive)
 
         # Chooser
         self.chooser = wpilib.SendableChooser()

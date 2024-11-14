@@ -1,14 +1,17 @@
 import commands2
 import constants
 from wpilib.shuffleboard import Shuffleboard
+from subsystems.swerveDrive import SwerveDrive
 
 class State(commands2.Subsystem):
-    def __init__(self):
+    def __init__(self, drive: SwerveDrive):
         super().__init__()
 
         self.driveMode = constants.kDefaultDriveMode
         self.driveSide = constants.kDefaultDriveSide
         self.halfSpeed = constants.kDefaultIsHalfSpeed
+
+        self.drive = drive
 
         # Each drive mode 'remembers' if it is in halfspeed or is inverted
         self.FOConfigs = (self.halfSpeed)
@@ -20,18 +23,13 @@ class State(commands2.Subsystem):
         self.driveSidevWidget = self.tab.add("Drive Side", "Default").getEntry()
         self.driveSpeedWidget = self.tab.add("Drive Speed", "Default").getEntry()
 
+    def updateDriveSide(self):
+        print("updating")
+        self.drive.driveSide = self.driveSide
+
     def isDriveFO(self):
         #print(self.driveMode)
         return self.driveMode == "FO"
-    
-    def isDriveSideL(self):
-        return self.driveSide == 'L'
-    
-    def isDriveSideF(self):
-        return self.driveSide == 'F'
-    
-    def isDriveSideR(self):
-        return self.driveSide == 'R'
     
     def isDriveHalfSpeed(self):
         return self.halfSpeed != False
@@ -51,6 +49,7 @@ class State(commands2.Subsystem):
                 self.FOConfigs = self.halfSpeed
                 self.driveSide, self.halfSpeed = self.ROConfigs
                 self.driveMode = "RO"
+                self.updateDriveSide()
             elif self.driveMode == "RO":
                 self.ROConfigs = (self.driveSide, self.halfSpeed)
                 self.halfSpeed = self.FOConfigs
@@ -64,10 +63,12 @@ class State(commands2.Subsystem):
             print("Button C")
             if self.driveMode == "RO":
                 self.driveSide = "F" if self.driveSide == "R" else "R" if self.driveSide == "L" else "L"
+                self.updateDriveSide()
 
         elif button == 'd' and pressed: # Cycle right thru drive sides (only works in robot oriented)
             print("Button d")
             if self.driveMode == "RO":
                 self.driveSide = "L" if self.driveSide == "R" else "R" if self.driveSide == "F" else "F"
+                self.updateDriveSide()
         
         self.updateWidgets() # Update Shuffleboard to match the new state(s)

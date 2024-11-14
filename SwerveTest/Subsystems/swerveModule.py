@@ -65,10 +65,6 @@ class SwerveModule:
             self.turnEncoder.getPosition() * math.tau * constants.kSwerveTurnGearRatio
         )
 
-        turnFeedforward = self.turnFeedforward.calculate(
-            self.turningPIDController.getSetpoint().velocity
-        )
-
         self.drive.set(driveOutput)
         self.turn.setVoltage(turnOutput)
 
