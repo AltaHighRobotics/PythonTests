@@ -51,8 +51,8 @@ class SwerveDrive(Subsystem):
 
     def drive(
         self,
-        xSpeed: float,
         ySpeed: float,
+        xSpeed: float,
         rot: float,
         fieldRelative: bool
     ) -> None:
@@ -74,10 +74,10 @@ class SwerveDrive(Subsystem):
 
         swerveModuleStates = self.kinematics.toSwerveModuleStates(
             wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(
-                xSpeed, ySpeed, rot, -self.gyro.getRotation2d()
+                -xSpeed, -ySpeed, rot, -self.gyro.getRotation2d()
             )
             if fieldRelative
-            else wpimath.kinematics.ChassisSpeeds(xSpeed, ySpeed, rot)
+            else wpimath.kinematics.ChassisSpeeds(-xSpeed, -ySpeed, rot)
         )
 
         self.pub.set([swerveModuleStates[0],swerveModuleStates[1],swerveModuleStates[2],swerveModuleStates[3]])
