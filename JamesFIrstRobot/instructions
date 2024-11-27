@@ -1,0 +1,10 @@
+Code a command based tank drive robot
+will need:
+- driveSubsystem.py Done
+- driveCommand.py Done
+- robotContainer.py Done
+- robot.py Done
+- pyproject.toml (can copy) Done
+- constants.py (can reuse from tankBot) done
+If you dont know why something is there, please ask me!
+look at tankBot files as litle as possible

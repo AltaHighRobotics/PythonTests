@@ -15,13 +15,7 @@ kLeftMotor2ID = 2
 kRightMotor1ID = 3
 kRightMotor2ID = 4
 
-kWheelDiameterInches = 6
 
 # Operator Interface
 kDriverControllerPort = 0
 
-# Physical parameters
-kDriveTrainMotorCount = 2
-kTrackWidth = 0.381 * 2
-kGearingRatio = 8
-kWheelRadius = 0.0508
