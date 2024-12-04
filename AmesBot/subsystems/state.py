@@ -61,56 +61,42 @@ class State(commands2.Subsystem):
 
 
     def handleButton(self, button, pressed):
-        if button == "Forward" and pressed:
+        if button == "Forward" and pressed: # Run score subsytems to accomplish objective
             print("Button FWD")
-            if self.objective == "B":
-                if self.endstop != 1:
+            if self.objective == "B": # Extend bucket
+                if self.endstop != 1: # As long as the button hasn't hit the endstop, we can extend it
                     self.bucket == 1
                 else:
-                    self.bucket == 0
+                    self.bucket == 0 # Don't move the bucket it we're at the stop
             
-            else:
-                self.intake = 1
-                if self.endstop == -1:
-                    self.bucket == 0
-                    self.intaking = 1
+            else: # Intake/Plow
+                self.intake = 1 # Tell State we want to intake (if the bucket needs to RTH, the endstops will trigger
+                #                  actual intaking when the bucket is back)
+
+                if self.endstop == -1: # We can only intake if the bucket is all the way back
+                    self.bucket == 0 # Stop the bucket
+                    self.intaking = 1 # Actually run the intake
         
-        if button == "Back" and pressed:
+        elif button == "Back" and pressed: # Run score subsystems to accomplish objective
             print("Button BACK")
-            if self.objective == "B":
-                if self.endstop != -1:
+            if self.objective == "B": # Retract Bucket
+                if self.endstop != -1: # Bottom endstop
                     self.bucket == -1
                 else:
                     self.bucket == 0
             
-            else:
+            else: # Intake/Plow
                 self.intake = -1
-                self.intaking = -1
+                self.intaking = -1 # Run the intake backwards (useful if the bot jams)
         
         
 
-        if button == 'a' and pressed: # Change the drive mode
-            print("Button A")
+        elif button == 'Drive Mode' and pressed: # Change the drive mode
+            print("Button DM")
             if self.driveMode == "FO":
                 self.driveMode = "RO"
-                self.updateDriveSide()
+                self.updateDriveSide() # Since the robot can run on multiple sides in RO, set the side
             elif self.driveMode == "RO":
-                self.driveMode = "FO"
-        
-        elif button == 'b' and pressed: # Toggle halfspeed
-            print("Button B")
-            self.halfSpeed = not self.halfSpeed        
-        
-        elif button == 'c' and pressed: # Cycle left thru drive sides (only works in robot oriented)
-            print("Button C")
-            if self.driveMode == "RO":
-                self.driveSide = "F" if self.driveSide == "R" else "R" if self.driveSide == "L" else "L"
-                self.updateDriveSide()
-
-        elif button == 'd' and pressed: # Cycle right thru drive sides (only works in robot oriented)
-            print("Button d")
-            if self.driveMode == "RO":
-                self.driveSide = "L" if self.driveSide == "R" else "R" if self.driveSide == "F" else "F"
-                self.updateDriveSide()
+                self.driveMode = "FO" # FO is headless so we don't need to set the drive side   
         
         self.updateWidgets() # Update Shuffleboard to match the new state(s)
