@@ -11,14 +11,11 @@ import commands2
 import commands2.button
 
 import constants
-
-
-from commands.defaultdrive import DefaultDrive
-from commands.halvedrivespeed import HalveDriveSpeed
-from commands.curvatureDrive import CurvatureDrive
-
-from subsystems.driveSubsystem import DriveSubsystem
 from subsystems.state import State
+from subsystems.swerveDrive import SwerveDrive
+from commands.FCDrive import FODrive
+from commands.RODrive import RODrive
+from commands.halveDriveSpeed import HalveDriveSpeed
 
 class RobotContainer:
     """
@@ -33,11 +30,12 @@ class RobotContainer:
         # self.driverController = wpilib.XboxController(constants.kDriverControllerPort)
         self.driverController = wpilib.Joystick(constants.kDriverControllerPort)
 
-        # The robot's subsystems
-        self.drive = DriveSubsystem()
-        
+        # The robot's subsystems                
+        # Drive
+        self.drive = SwerveDrive()
+
         # State
-        self.state = State()
+        self.state = State(self.drive)
 
         # Chooser
         self.chooser = wpilib.SendableChooser()
@@ -50,15 +48,15 @@ class RobotContainer:
         wpilib.SmartDashboard.putData("Autonomous", self.chooser)
 
         self.configureButtonBindings()
+        self.drive.setDefaultCommand(
+            FODrive(self.drive,
+                self.driverController.getX, 
+                self.driverController.getY, 
+                self.driverController.getZ
+                )
+        )
 
         # set up default drive command
-        self.drive.setDefaultCommand(
-            DefaultDrive(
-                self.drive,
-                lambda: -self.driverController.getY(),
-                lambda: self.driverController.getZ(),
-            )
-        )
 
     def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a state change
         commands2.button.JoystickButton(self.driverController, button).onTrue(commands2.cmd.runOnce(lambda: self.state.handleButton(stateTrigger, True))).onFalse(commands2.cmd.runOnce(lambda: self.state.handleButton(stateTrigger, False)))
@@ -73,28 +71,24 @@ class RobotContainer:
         self.mapButton(1, 'a')
         self.mapButton(2, 'b')
         self.mapButton(3, 'c')
+        self.mapButton(4, 'd')
 
         # STATES - States trigger commands
-        # Invert the drivetrain direction
-        commands2.button.Trigger(self.state.isDriveInverted).onTrue(
-            commands2.cmd.runOnce(lambda: self.drive.invert())
-        ).onFalse(
-            commands2.cmd.runOnce(lambda: self.drive.invert())
-        )
-        # Set the drive command based on the drive state. This allows the drive to operate in multiple states
-        commands2.button.Trigger(self.state.isDriveArcade).whileTrue(
-            DefaultDrive(
-                self.drive,
-                lambda: -self.driverController.getY(),
-                lambda: self.driverController.getZ(),
-            )).whileFalse(
-                CurvatureDrive(
-                self.drive,
-                lambda: -self.driverController.getY(),
-                lambda: self.driverController.getZ(),
-            ))
+        commands2.button.Trigger(self.state.isDriveFO).whileTrue(
+            FODrive(self.drive,
+                    self.driverController.getX, 
+                    self.driverController.getY, 
+                    self.driverController.getZ
+                    )
+                    ).whileFalse(
+                     RODrive(self.drive,
+                            self.driverController.getX, 
+                            self.driverController.getY, 
+                            self.driverController.getZ
+                    )   
+                    )
         
         commands2.button.Trigger(self.state.isDriveHalfSpeed).whileTrue(HalveDriveSpeed(self.drive))
-
+        
     def getAutonomousCommand(self) -> str:
         return self.chooser.getSelected()
