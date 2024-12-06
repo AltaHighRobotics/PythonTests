@@ -4,18 +4,27 @@ import math
 kDriverControllerPort = 0
 
 # States
-kDefaultDriveMode = "FO"
-kDefaultDriveSide = "F"
+#kDefaultDriveMode = "FO"
+#kDefaultDriveSide = "F"
 #kDefaultIsHalfSpeed = False
 kDefaultObjective = "I"
 kDefaultBucket = 0
 kDefaultIntake = 0
 kDefaultEndStop = -1
 
+# Swerve
+kModuleMaxAngularVelocity = math.pi
+kModuleMaxAngularAcceleration = math.tau
+kSwerveTurnDisPerPulse = 0.267745716 * 36.0
+
 # Dimensions
 kSwerveModCtrToCtr = .635
 kWheelRadius = 0.0508
 
+# Enstops
+kOutEndstopPort = 1
+kInEndstopPort = 1
+kEndstopInversion = False
 # MotorIDs
 # Front Left
 kFLDriveID = 1
@@ -54,7 +63,3 @@ kTurnBRP = 10
 kTurnBRI = 0
 kTurnBRD = 0
 
-# Swerve
-kModuleMaxAngularVelocity = math.pi
-kModuleMaxAngularAcceleration = math.tau
-kSwerveTurnGearRatio = 1/(11.3142 * 3)

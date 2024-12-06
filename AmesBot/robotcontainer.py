@@ -73,6 +73,9 @@ class RobotContainer:
     def mapPOV(self, angle, stateTrigger): # Maps a physical button to trigger a state change
         commands2.button.POVButton(self.driverController, angle).onTrue(commands2.cmd.runOnce(lambda: self.state.handleButton(stateTrigger, True))).onFalse(commands2.cmd.runOnce(lambda: self.state.handleButton(stateTrigger, False)))
     
+    def mapEndstop(self, port, stateTrigger, isInverted = False):
+        commands2.button.Trigger(wpilib.DigitalInput(port).get).onTrue(commands2.cmd.runOnce(lambda: self.state.handleButton(stateTrigger, not isInverted))).onFalse(commands2.cmd.runOnce(lambda: self.state.handleButton(stateTrigger, isInverted)))
+
     def configureButtonBindings(self):
        
         """
@@ -80,19 +83,22 @@ class RobotContainer:
         instantiating a :GenericHID or one of its subclasses (Joystick or XboxController),
         and then passing it to a JoystickButton.
         """
+        
         # BUTTONS - Buttons trigger states or commands
         self.mapButton(1, 'Forward')
         self.mapButton(2, 'Back')
         self.mapButton(12, 'Drive Mode')
-        self.mapButton(3, 'Out')
-        self.mapButton(4, 'In')
-        # POV's
+        #self.mapButton(3, 'Out')
+        #self.mapButton(4, 'In')
 
+        # POV's
         self.mapPOV(0, 'Bucket')
         self.mapPOV(90, 'Plow')
         self.mapPOV(180, 'Intake')
 
-        #self.mapButton(4, 'd')
+        # Endstops
+        self.mapEndstop(constants.kOutEndstopPort, "Out", constants.kEndstopInversion)
+        self.mapEndstop(constants.kInEndstopPort, "In", constants.kEndstopInversion)
 
         # STATES - States trigger commands
         """commands2.button.Trigger(self.state.isDriveFO).whileTrue(
