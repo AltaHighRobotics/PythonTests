@@ -68,7 +68,7 @@ class RobotContainer:
         and then passing it to a JoystickButton.
         """
         # BUTTONS - Buttons trigger states or commands
-        self.mapButton(1, 'a')
+        """self.mapButton(1, 'a')
         self.mapButton(2, 'b')
         self.mapButton(3, 'c')
         self.mapButton(4, 'd')
@@ -89,6 +89,6 @@ class RobotContainer:
                     )
         
         commands2.button.Trigger(self.state.isDriveHalfSpeed).whileTrue(HalveDriveSpeed(self.drive))
-        
+        """
     def getAutonomousCommand(self) -> str:
         return self.chooser.getSelected()

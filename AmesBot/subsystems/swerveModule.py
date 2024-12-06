@@ -19,7 +19,7 @@ class SwerveModule:
         self.drive = ctre.WPI_TalonSRX(driveid)
         self.turn = rev.CANSparkMax(steerid, rev.CANSparkLowLevel.MotorType.kBrushless)
         self.turnEncoder = self.turn.getEncoder()
-        self.turnEncoder.setPositionConversionFactor(constants.kSwerveTurnDisPerPulse/42)
+        self.turnEncoder.setPositionConversionFactor(constants.kSwerveTurnDisPerPulse)
         self.turningPIDController = wpimath.controller.ProfiledPIDController(
             kP,
             kI,
@@ -42,17 +42,17 @@ class SwerveModule:
         :param desiredState: Desired state with speed and angle.
         """
 
-        encoderRotation = wpimath.geometry.Rotation2d(self.turningEncoder.getDistance())
-
+        encoderRotation = wpimath.geometry.Rotation2d(self.turnEncoder.getPosition())
+        state = desiredState
         # Optimize the reference state to avoid spinning further than 90 degrees
-        state = wpimath.kinematics.SwerveModuleState.optimize(
-            desiredState, encoderRotation
-        ) # Remove if dirve motors are jittering
+        #state = wpimath.kinematics.SwerveModuleState.optimize(
+        #    desiredState, encoderRotation
+        #) # Remove if dirve motors are jittering
 
         # Scale speed by cosine of angle error. This scales down movement perpendicular to the desired
         # direction of travel that can occur when modules change directions. This results in smoother
         # driving.
-        state.speed *= (state.angle - encoderRotation).cos() # Remove if motors are going the wrong way
+        #state.speed *= (state.angle - encoderRotation).cos() # Remove if motors are going the wrong way
 
         # Calculate the drive output from the drive PID controller.
         driveOutput = state.speed

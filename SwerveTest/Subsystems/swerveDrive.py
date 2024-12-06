@@ -65,12 +65,12 @@ class SwerveDrive(Subsystem):
         """
 
         # Change the speeds so the robot moves relative to a side in robot oriented
-        if not fieldRelative:
+        """if not fieldRelative:
             if self.driveSide == "R":
                 xSpeed, ySpeed = ySpeed, -xSpeed
             
             elif self.driveSide == "L":
-                xSpeed, ySpeed = -ySpeed, xSpeed                                                
+                xSpeed, ySpeed = -ySpeed, xSpeed  """                                              
 
         swerveModuleStates = self.kinematics.toSwerveModuleStates(
             wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(

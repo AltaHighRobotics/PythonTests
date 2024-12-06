@@ -84,9 +84,9 @@ class SwerveDrive(Subsystem):
         #self.pub.set([wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[0], self.frontLeft.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[1], self.frontRight.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[2], self.backLeft.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[3], self.backRight.getEncoder())])
 
         self.frontLeft.setDesiredState(swerveModuleStates[0])
-        self.frontRight.setDesiredState(swerveModuleStates[1])
-        self.backLeft.setDesiredState(swerveModuleStates[2])
-        self.backRight.setDesiredState(swerveModuleStates[3])
+        #self.frontRight.setDesiredState(swerveModuleStates[1])
+        #self.backLeft.setDesiredState(swerveModuleStates[2])
+        #self.backRight.setDesiredState(swerveModuleStates[3])
 
     def setMaxOutput(self, maxOutput):
         self.maxOut = maxOutput

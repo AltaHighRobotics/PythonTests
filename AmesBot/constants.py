@@ -44,22 +44,22 @@ kBRTurnID = 8
 
 # Turn PID % FF
 # Front Left
-kTurnFLP = 10
+kTurnFLP = 5
 kTurnFLI = 0
 kTurnFLD = 0
 
 # Front Right
-kTurnFRP = 10
+kTurnFRP = 5
 kTurnFRI = 0
 kTurnFRD = 0
 
 # Back Left
-kTurnBLP = 10
+kTurnBLP = 5
 kTurnBLI = 0
 kTurnBLD = 0
 
 # Back Right
-kTurnBRP = 10
+kTurnBRP = 5
 kTurnBRI = 0
 kTurnBRD = 0
 

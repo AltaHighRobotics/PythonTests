@@ -97,8 +97,8 @@ class RobotContainer:
         self.mapPOV(180, 'Intake')
 
         # Endstops
-        self.mapEndstop(constants.kOutEndstopPort, "Out", constants.kEndstopInversion)
-        self.mapEndstop(constants.kInEndstopPort, "In", constants.kEndstopInversion)
+        #self.mapEndstop(constants.kOutEndstopPort, "Out", constants.kEndstopInversion)
+        #self.mapEndstop(constants.kInEndstopPort, "In", constants.kEndstopInversion)
 
         # STATES - States trigger commands
         """commands2.button.Trigger(self.state.isDriveFO).whileTrue(
