@@ -29,11 +29,11 @@ class SwerveDrive(Subsystem):
         self.backRight = SwerveModule(constants.kBRDriveID, constants.kBRTurnID,
                                       constants.kTurnBRP, constants.kTurnBRI, constants.kTurnBRD)
         
-        self.maxOut = .75
+        self.setMaxOutput(.8)
 
         self.gyro = navx.AHRS.create_spi() # NavX
 
-        self.driveSide = "F"
+        #self.driveSide = "F"
 
         self.kinematics = wpimath.kinematics.SwerveDrive4Kinematics(
             self.frontLeftLocation,
@@ -64,14 +64,14 @@ class SwerveDrive(Subsystem):
         :param fieldRelative: Whether the provided x and y speeds are relative to the field.
         """
 
-        # Change the speeds so the robot moves relative to a side in robot oriented
+        """# Change the speeds so the robot moves relative to a side in robot oriented
         if not fieldRelative:
             if self.driveSide == "R":
                 xSpeed, ySpeed = ySpeed, -xSpeed
             
             elif self.driveSide == "L":
                 xSpeed, ySpeed = -ySpeed, xSpeed                                                
-
+        """
         swerveModuleStates = self.kinematics.toSwerveModuleStates(
             wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(
                 -xSpeed, -ySpeed, rot, -self.gyro.getRotation2d()
@@ -84,9 +84,13 @@ class SwerveDrive(Subsystem):
         #self.pub.set([wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[0], self.frontLeft.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[1], self.frontRight.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[2], self.backLeft.getEncoder()),wpimath.kinematics.SwerveModuleState.optimize(swerveModuleStates[3], self.backRight.getEncoder())])
 
         self.frontLeft.setDesiredState(swerveModuleStates[0])
-        #self.frontRight.setDesiredState(swerveModuleStates[1])
-        #self.backLeft.setDesiredState(swerveModuleStates[2])
-        #self.backRight.setDesiredState(swerveModuleStates[3])
+        self.frontRight.setDesiredState(swerveModuleStates[1])
+        self.backLeft.setDesiredState(swerveModuleStates[2])
+        self.backRight.setDesiredState(swerveModuleStates[3])
 
     def setMaxOutput(self, maxOutput):
         self.maxOut = maxOutput
+        self.frontLeft.setMaxOut(self.maxOut)
+        self.frontRight.setMaxOut(self.maxOut)
+        self.backLeft.setMaxOut(self.maxOut)
+        self.backRight.setMaxOut(self.maxOut)

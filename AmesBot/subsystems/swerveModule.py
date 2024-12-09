@@ -13,13 +13,11 @@ kWheelRadius = 0.0508
 kModuleMaxAngularVelocity = math.pi
 kModuleMaxAngularAcceleration = math.tau
 
-
 class SwerveModule:
-    def __init__(self, driveid, steerid, kP, kI, kD):
+    def __init__(self, driveid: int, steerid: int, kP: float, kI: float, kD: float):
         self.drive = ctre.WPI_TalonSRX(driveid)
         self.turn = rev.CANSparkMax(steerid, rev.CANSparkLowLevel.MotorType.kBrushless)
         self.turnEncoder = self.turn.getEncoder()
-        self.turnEncoder.setPositionConversionFactor(constants.kSwerveTurnDisPerPulse)
         self.turningPIDController = wpimath.controller.ProfiledPIDController(
             kP,
             kI,
@@ -31,8 +29,16 @@ class SwerveModule:
         )
         self.drive.setNeutralMode(ctre.NeutralMode.Brake) # Brake
 
+        self.maxOut = 0 # Maximum output power
+
         # Limit input range to -pi to pi with wrap
         self.turningPIDController.enableContinuousInput(-math.pi, math.pi)
+
+    def getEncoder(self):
+        return wpimath.geometry.Rotation2d(self.turnEncoder.getPosition() * math.tau * constants.kSwerveTurnGearRatio)
+    
+    def setMaxOut(self, value: float):
+        self.maxOut = value
 
     def setDesiredState(
         self, desiredState: wpimath.kinematics.SwerveModuleState
@@ -42,28 +48,26 @@ class SwerveModule:
         :param desiredState: Desired state with speed and angle.
         """
 
-        encoderRotation = wpimath.geometry.Rotation2d(self.turnEncoder.getPosition())
-        state = desiredState
+        encoderRotation = self.getEncoder()
+
         # Optimize the reference state to avoid spinning further than 90 degrees
-        #state = wpimath.kinematics.SwerveModuleState.optimize(
-        #    desiredState, encoderRotation
-        #) # Remove if dirve motors are jittering
+        state = desiredState
+        """state = wpimath.kinematics.SwerveModuleState.optimize(
+            desiredState, encoderRotation
+        )"""
 
         # Scale speed by cosine of angle error. This scales down movement perpendicular to the desired
         # direction of travel that can occur when modules change directions. This results in smoother
         # driving.
-        #state.speed *= (state.angle - encoderRotation).cos() # Remove if motors are going the wrong way
+        #state.speed *= (state.angle - encoderRotation).cos()
 
         # Calculate the drive output from the drive PID controller.
         driveOutput = state.speed
 
         # Calculate the turning motor output from the turning PID controller.
         turnOutput = self.turningPIDController.calculate(
-            self.turnEncoder.getPosition(), -state.angle.radians()
+            self.turnEncoder.getPosition() * math.tau * constants.kSwerveTurnGearRatio, state.angle.radians()
         )
 
-        self.drive.set(driveOutput)
+        self.drive.set(max(-self.maxOut, min(driveOutput, self.maxOut)))
         self.turn.setVoltage(turnOutput)
-
-        
-        

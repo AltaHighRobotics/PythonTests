@@ -15,7 +15,7 @@ kDefaultEndStop = -1
 # Swerve
 kModuleMaxAngularVelocity = math.pi
 kModuleMaxAngularAcceleration = math.tau
-kSwerveTurnDisPerPulse = 0.267745716 * 36.0
+kSwerveTurnGearRatio = 1/36
 
 # Dimensions
 kSwerveModCtrToCtr = .635
