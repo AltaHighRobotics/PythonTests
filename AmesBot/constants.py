@@ -15,7 +15,7 @@ kDefaultEndStop = -1
 # Swerve
 kModuleMaxAngularVelocity = math.pi
 kModuleMaxAngularAcceleration = math.tau
-kSwerveTurnGearRatio = 1/36
+kSwerveTurnGearRatio = 1/37
 
 # Dimensions
 kSwerveModCtrToCtr = .635
@@ -44,22 +44,22 @@ kBRTurnID = 8
 
 # Turn PID % FF
 # Front Left
-kTurnFLP = 5
+kTurnFLP = 15
 kTurnFLI = 0
-kTurnFLD = 0
+kTurnFLD = .1
 
 # Front Right
-kTurnFRP = 5
+kTurnFRP = 15
 kTurnFRI = 0
-kTurnFRD = 0
+kTurnFRD = .1
 
 # Back Left
-kTurnBLP = 5
+kTurnBLP = 15
 kTurnBLI = 0
-kTurnBLD = 0
+kTurnBLD = .1
 
 # Back Right
-kTurnBRP = 5
+kTurnBRP = 15
 kTurnBRI = 0
-kTurnBRD = 0
+kTurnBRD = .1
 

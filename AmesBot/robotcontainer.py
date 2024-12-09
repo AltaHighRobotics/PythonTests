@@ -119,6 +119,7 @@ class RobotContainer:
         commands2.button.Trigger(self.state.isRetracting).whileTrue(Retract(self.bucket))
         commands2.button.Trigger(self.state.isIntaking).whileTrue(Intake(self.intake))
         commands2.button.Trigger(self.state.isOutaking).whileTrue(Outtake(self.intake))
+        commands2.button.JoystickButton(self.driverController, 5).onTrue(commands2.cmd.runOnce(lambda: self.drive.FOReset(), self.drive))
         
         
     def getAutonomousCommand(self) -> str:

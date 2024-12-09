@@ -6,6 +6,7 @@ import wpimath.kinematics
 from subsystems.swerveModule import SwerveModule
 import navx
 import ntcore
+import math
 
 class SwerveDrive(Subsystem):
     """
@@ -72,12 +73,13 @@ class SwerveDrive(Subsystem):
             elif self.driveSide == "L":
                 xSpeed, ySpeed = -ySpeed, xSpeed                                                
         """
+        #print(self.gyro.getYaw())
         swerveModuleStates = self.kinematics.toSwerveModuleStates(
             wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(
-                -xSpeed, -ySpeed, rot, -self.gyro.getRotation2d()
+                -xSpeed, -ySpeed, -rot, self.gyro.getRotation2d()#math.radians(-self.gyro.getYaw())
             )
             if fieldRelative
-            else wpimath.kinematics.ChassisSpeeds(-xSpeed, -ySpeed, rot)
+            else wpimath.kinematics.ChassisSpeeds(-xSpeed, -ySpeed, -rot)
         )
 
         self.pub.set([swerveModuleStates[0],swerveModuleStates[1],swerveModuleStates[2],swerveModuleStates[3]])
@@ -94,3 +96,6 @@ class SwerveDrive(Subsystem):
         self.frontRight.setMaxOut(self.maxOut)
         self.backLeft.setMaxOut(self.maxOut)
         self.backRight.setMaxOut(self.maxOut)
+    
+    def FOReset(self):
+        self.gyro.zeroYaw()

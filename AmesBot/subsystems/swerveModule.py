@@ -49,18 +49,18 @@ class SwerveModule:
         """
 
         encoderRotation = self.getEncoder()
-
+        desiredState.angle = -desiredState.angle
         # Optimize the reference state to avoid spinning further than 90 degrees
         state = desiredState
-        """state = wpimath.kinematics.SwerveModuleState.optimize(
+        state = wpimath.kinematics.SwerveModuleState.optimize(
             desiredState, encoderRotation
-        )"""
+        )
 
         # Scale speed by cosine of angle error. This scales down movement perpendicular to the desired
         # direction of travel that can occur when modules change directions. This results in smoother
         # driving.
-        #state.speed *= (state.angle - encoderRotation).cos()
-
+        state.speed *= (state.angle - encoderRotation).cos()
+        
         # Calculate the drive output from the drive PID controller.
         driveOutput = state.speed
 
