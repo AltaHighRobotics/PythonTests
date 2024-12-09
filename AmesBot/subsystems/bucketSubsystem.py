@@ -1,10 +1,13 @@
 from commands2 import Subsystem
 import constants
+import phoenix5 as ctre
 
 class BucketSubsystem(Subsystem):
 
     def __init__(self) -> None:
         super().__init__()
+        self.motor = ctre.VictorSPX(constants.kBucketID)
+        
 
     def setSpeed(self, speed: float):
-        print(speed)
+        self.motor.set(ctre.ControlMode.PercentOutput, speed)

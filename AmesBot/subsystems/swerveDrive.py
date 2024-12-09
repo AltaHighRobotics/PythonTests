@@ -30,7 +30,7 @@ class SwerveDrive(Subsystem):
         self.backRight = SwerveModule(constants.kBRDriveID, constants.kBRTurnID,
                                       constants.kTurnBRP, constants.kTurnBRI, constants.kTurnBRD)
         
-        self.setMaxOutput(.8)
+        self.setMaxOutput(constants.kSwerveMaxOutput)
 
         self.gyro = navx.AHRS.create_spi() # NavX
 
@@ -55,6 +55,7 @@ class SwerveDrive(Subsystem):
         ySpeed: float,
         xSpeed: float,
         rot: float,
+        speed: float,
         fieldRelative: bool
     ) -> None:
         """
@@ -73,10 +74,11 @@ class SwerveDrive(Subsystem):
             elif self.driveSide == "L":
                 xSpeed, ySpeed = -ySpeed, xSpeed                                                
         """
+        speed = max(constants.kSwerveMinSpeed, min(speed, constants.kSwerveMaxSpeed))
         #print(self.gyro.getYaw())
         swerveModuleStates = self.kinematics.toSwerveModuleStates(
             wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(
-                -xSpeed, -ySpeed, -rot, self.gyro.getRotation2d()#math.radians(-self.gyro.getYaw())
+                -xSpeed*speed, -ySpeed*speed, -rot*speed, self.gyro.getRotation2d()#math.radians(-self.gyro.getYaw())
             )
             if fieldRelative
             else wpimath.kinematics.ChassisSpeeds(-xSpeed, -ySpeed, -rot)

@@ -61,7 +61,8 @@ class RobotContainer:
             FODrive(self.drive,
                 self.driverController.getX, 
                 self.driverController.getY, 
-                self.driverController.getZ
+                self.driverController.getZ,
+                lambda: 1
                 )
         )
 

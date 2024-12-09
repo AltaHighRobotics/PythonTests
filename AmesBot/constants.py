@@ -10,7 +10,7 @@ kDriverControllerPort = 0
 kDefaultObjective = "I"
 kDefaultBucket = 0
 kDefaultIntake = 0
-kDefaultEndStop = -1
+kDefaultEndStop = 0
 
 # Swerve
 kModuleMaxAngularVelocity = math.pi
@@ -25,7 +25,22 @@ kWheelRadius = 0.0508
 kOutEndstopPort = 1
 kInEndstopPort = 1
 kEndstopInversion = False
+
+# Speeds
+kBucketSpeed = .5
+kIntakeSpeed = .8
+kOuttakeSpeed = .3
+kSwerveMinSpeed = .1
+kSwerveMaxSpeed = 1
+kSwerveMaxOutput = .8
 # MotorIDs
+# Bucket
+kBucketID = 9
+
+#Intake
+kIntakeLID = 10
+kIntakeRID = 11
+
 # Front Left
 kFLDriveID = 1
 kFLTurnID = 2

@@ -6,7 +6,8 @@ class FODrive(Command):
                  drive: SwerveDrive,
                  Xt: typing.Callable[[], float],
                  Yt: typing.Callable[[], float],
-                 Zr: typing.Callable[[], float]
+                 Zr: typing.Callable[[], float],
+                 Sp: typing.Callable[[], float]
                  ):
         super().__init__()
 
@@ -14,8 +15,9 @@ class FODrive(Command):
         self.Xt = Xt
         self.Yt = Yt
         self.Zr = Zr
+        self.Sp = Sp
 
         self.addRequirements(self.drive)
 
     def execute(self):
-        self.drive.drive(self.Xt(), self.Yt(), self.Zr(), True)
+        self.drive.drive(self.Xt(), self.Yt(), self.Zr(), self.Sp(),  True)
