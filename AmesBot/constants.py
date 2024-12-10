@@ -4,9 +4,6 @@ import math
 kDriverControllerPort = 0
 
 # States
-#kDefaultDriveMode = "FO"
-#kDefaultDriveSide = "F"
-#kDefaultIsHalfSpeed = False
 kDefaultObjective = "I"
 kDefaultBucket = 0
 kDefaultIntake = 0
@@ -58,24 +55,24 @@ kBLTurnID = 6
 kBRDriveID = 7
 kBRTurnID = 8
 
-# Turn PID % FF
+# Turn PID
 # Front Left
 kTurnFLP = 15
 kTurnFLI = 0
 kTurnFLD = .1
 
 # Front Right
-kTurnFRP = 15
-kTurnFRI = 0
-kTurnFRD = .1
+kTurnFRP = kTurnFLP + 0
+kTurnFRI = kTurnFLI + 0
+kTurnFRD = kTurnFLD + 0
 
 # Back Left
-kTurnBLP = 15
-kTurnBLI = 0
-kTurnBLD = .1
+kTurnBLP = kTurnFLP + 0
+kTurnBLI = kTurnFLI + 0
+kTurnBLD = kTurnFLD + 0
 
 # Back Right
-kTurnBRP = 15
-kTurnBRI = 0
-kTurnBRD = .1
+kTurnBRP = kTurnFLP + 0
+kTurnBRI = kTurnFLI + 0
+kTurnBRD = kTurnFLD + 0
 

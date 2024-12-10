@@ -19,8 +19,6 @@ from subsystems.state import State
 from subsystems.swerveDrive import SwerveDrive
 from subsystems.bucketSubsystem import BucketSubsystem
 from commands.FCDrive import FODrive
-#from commands.RODrive import RODrive
-#from commands.halveDriveSpeed import HalveDriveSpeed
 
 class RobotContainer:
     """
@@ -95,20 +93,6 @@ class RobotContainer:
         #self.mapEndstop(constants.kInEndstopPort, "In", constants.kEndstopInversion)
 
         # STATES - States trigger commands
-        """commands2.button.Trigger(self.state.isDriveFO).whileTrue(
-            FODrive(self.drive,
-                    self.driverController.getX, 
-                    self.driverController.getY, 
-                    self.driverController.getZ
-                    )
-                    ).whileFalse(
-                     RODrive(self.drive,
-                            self.driverController.getX, 
-                            self.driverController.getY, 
-                            self.driverController.getZ
-                    )   
-                    )
-"""
         commands2.button.Trigger(self.state.isExtending).whileTrue(Extend(self.bucket))
         commands2.button.Trigger(self.state.isRetracting).whileTrue(Retract(self.bucket))
         commands2.button.Trigger(self.state.isIntaking).whileTrue(Intake(self.intake))
