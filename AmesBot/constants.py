@@ -10,7 +10,7 @@ kDriverControllerPort = 0
 kDefaultObjective = "I"
 kDefaultBucket = 0
 kDefaultIntake = 0
-kDefaultEndStop = 0
+kDefaultEndStop = -1
 kDefaultEndStopOverride = 0
 
 # Swerve
@@ -28,7 +28,7 @@ kInEndstopPort = 1
 kEndstopInversion = False
 
 # Speeds
-kBucketSpeed = .5
+kBucketSpeed = .8
 kIntakeSpeed = .8
 kOuttakeSpeed = .3
 kSwerveMinSpeed = .2
