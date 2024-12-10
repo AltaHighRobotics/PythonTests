@@ -1,6 +1,7 @@
 from commands2 import Subsystem
 import constants
-
+import phoenix5 as ctre
+import wpilib
 class IntakeSubsystem(Subsystem):
     """
     Represents a 2 motor flywheel intake system
@@ -8,7 +9,10 @@ class IntakeSubsystem(Subsystem):
 
     def __init__(self) -> None:
         super().__init__()
+        self.motorLeft = ctre.WPI_VictorSPX(constants.kIntakeLID)
+        self.motorRight = ctre.WPI_VictorSPX(constants.kIntakeRID)
+        self.motorRight.setInverted(True)
+        self.motors = wpilib.MotorControllerGroup(self.motorLeft, self.motorRight)
 
-    def setSpeed(self, speed): # Print out the speed so we know everything's woring TODO: actually move the motors
-        print(speed)
-        
+    def setSpeed(self, speed): # Sets speed and runs intake. 
+        self.motors.set(speed)

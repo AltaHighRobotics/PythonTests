@@ -11,8 +11,8 @@ kDefaultEndStop = -1
 kDefaultEndStopOverride = 0
 
 # Swerve
-kModuleMaxAngularVelocity = math.pi
-kModuleMaxAngularAcceleration = math.tau
+kModuleMaxAngularVelocity = math.tau
+kModuleMaxAngularAcceleration = 2*math.tau
 kSwerveTurnGearRatio = 1/37
 
 # Dimensions
@@ -20,15 +20,15 @@ kSwerveModCtrToCtr = .635
 kWheelRadius = 0.0508
 
 # Enstops
-kOutEndstopPort = 1
-kInEndstopPort = 1
-kEndstopInversion = False
+kOutEndstopPort = 3
+kInEndstopPort = 2
+kEndstopInversion = True
 
 # Speeds
 kBucketSpeed = .8
 kIntakeSpeed = .8
 kOuttakeSpeed = .3
-kSwerveMinSpeed = .2
+kSwerveMinSpeed = .3
 kSwerveMaxSpeed = 1
 kSwerveMaxOutput = .8
 # MotorIDs
@@ -57,7 +57,7 @@ kBRTurnID = 8
 
 # Turn PID
 # Front Left
-kTurnFLP = 15
+kTurnFLP = 10
 kTurnFLI = 0
 kTurnFLD = .1
 

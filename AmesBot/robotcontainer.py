@@ -39,21 +39,23 @@ class RobotContainer:
 
         # Bucket
         self.bucket = BucketSubsystem()
+
+        # Intake
         self.intake = IntakeSubsystem()
 
         # State
-        self.state = State(self.drive)
+        self.state = State()
 
         self.configureButtonBindings()
-        self.drive.setDefaultCommand(
+        """self.drive.setDefaultCommand(
             FODrive(self.drive,
                 self.driverController.getX, 
                 self.driverController.getY, 
                 self.driverController.getZ,
-                lambda: (self.driverController.getRawAxis(3)+1)/2
+                lambda: (-(self.driverController.getRawAxis(3))+1)/2
                 )
         )
-
+"""
         # set up default drive command
 
     def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a state change
@@ -77,8 +79,8 @@ class RobotContainer:
         self.mapButton(1, 'Forward')
         self.mapButton(2, 'Back')
         self.mapButton(12, 'Drive Mode')
-        self.mapButton(3, 'Out')
-        self.mapButton(4, 'In')
+        # self.mapButton(3, 'Out')
+        # self.mapButton(4, 'In')
 
         # POV's
         self.mapPOV(0, 'Bucket')
@@ -89,8 +91,8 @@ class RobotContainer:
         commands2.button.Trigger(self.state.isEndstopOverride).onTrue(commands2.cmd.runOnce(lambda: print("!!!ENDSTOPS OVERRIDDEN!!!")))
 
         # Endstops
-        #self.mapEndstop(constants.kOutEndstopPort, "Out", constants.kEndstopInversion)
-        #self.mapEndstop(constants.kInEndstopPort, "In", constants.kEndstopInversion)
+        self.mapEndstop(constants.kOutEndstopPort, "Out", not constants.kEndstopInversion)
+        self.mapEndstop(constants.kInEndstopPort, "In", constants.kEndstopInversion)
 
         # STATES - States trigger commands
         commands2.button.Trigger(self.state.isExtending).whileTrue(Extend(self.bucket))

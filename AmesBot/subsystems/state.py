@@ -78,7 +78,7 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
             Finally, if you want to display certain states, create an updateWidgets
             function that refreshes the widgets and put it in the handleButton function
     """
-    def __init__(self, drive: SwerveDrive):
+    def __init__(self):
         super().__init__()
 
         self.objective = constants.kDefaultObjective # "P": plow, "I": intake, "B": bucket
@@ -87,8 +87,6 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
         self.endstop = constants.kDefaultEndStop # 1: fully out, 0: middle, -1: fully in
         self.intaking = self.intake # 1: intaking, 0: idle, -1: outtake
         self.endstopOverride = constants.kDefaultEndStopOverride # User can overide the endstops if they are not working 0: not overridden, 1 overridden
-
-        self.drive = drive # Drivetrain
 
         # Shuffleboard widgets
         self.tab = Shuffleboard.getTab("State")
@@ -120,7 +118,6 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
     def handleButton(self, button, pressed):
         if button == "Forward": # Run score subsytems to accomplish objective
             if pressed:
-                print("Button FWD")
                 if self.objective == "B": # Extend bucket
                     if self.endstop != 1 or self.endstopOverride: # As long as the button hasn't hit the endstop, we can extend it
                         self.bucket = 1
@@ -131,7 +128,6 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
                     self.intake = 1 # Tell State we want to intake (if the bucket needs to RTH, the endstops will trigger
                     #                  actual intaking when the bucket is back)
                     self.bucket = -1
-
                     if self.endstop == -1 or self.endstopOverride: # We can only intake if the bucket is all the way back
                         self.bucket = 0 # Stop the bucket
                         self.intaking = 1 # Actually run the intake
@@ -152,7 +148,6 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
 
         elif button == "Back": # Run score subsystems to accomplish objective
             if pressed:
-                print("Button BACK")
                 if self.objective == "B": # Retract Bucket
                  if self.endstop != -1 or self.endstopOverride: # Bottom endstop
                     self.bucket = -1
@@ -167,7 +162,7 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
                 self.intake = 0
                 self.intaking = 0 
         
-        elif button == "Out" and not self.endstopOverride:
+        elif button == "Out":
             if pressed:
                 self.bucket = 0 # Stop the bucket
                 self.endstop = 1 # Tell State the bucket is fully out
@@ -175,7 +170,7 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
             else:
                 self.endstop = 0 # Tell State we're somewhere in the middle
 
-        elif button =="In" and not self.endstopOverride:
+        elif button =="In":
             if pressed:
                 self.bucket = 0 # Stop the bucket
                 self.endstop = -1 # Tell State that the bucket is fully in

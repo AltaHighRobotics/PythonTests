@@ -6,6 +6,7 @@ import wpimath.kinematics
 from subsystems.swerveModule import SwerveModule
 import navx
 import ntcore
+import math
 
 class SwerveDrive(Subsystem):
     """
@@ -41,11 +42,11 @@ class SwerveDrive(Subsystem):
         )
 
         self.gyro.reset()
-        nt = ntcore.NetworkTableInstance.getDefault()
+        """nt = ntcore.NetworkTableInstance.getDefault()
 
         # Start publishing an array of module states with the "/SwerveStates" key
         topic = nt.getStructArrayTopic("/SwerveStates", wpimath.kinematics.SwerveModuleState)
-        self.pub = topic.publish()
+        self.pub = topic.publish()"""
 
     def drive(
         self,
@@ -68,7 +69,7 @@ class SwerveDrive(Subsystem):
 
         swerveModuleStates = self.kinematics.toSwerveModuleStates(   # Kinematics
             wpimath.kinematics.ChassisSpeeds.fromFieldRelativeSpeeds(
-                -xSpeed*speed, -ySpeed*speed, -rot*speed, self.gyro.getRotation2d()
+                -xSpeed*speed, -ySpeed*speed, -rot*speed*math.pi, self.gyro.getRotation2d()
             )
             if fieldRelative
             else wpimath.kinematics.ChassisSpeeds(-xSpeed, -ySpeed, -rot)
