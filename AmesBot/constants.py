@@ -11,6 +11,7 @@ kDefaultObjective = "I"
 kDefaultBucket = 0
 kDefaultIntake = 0
 kDefaultEndStop = 0
+kDefaultEndStopOverride = 0
 
 # Swerve
 kModuleMaxAngularVelocity = math.pi
@@ -30,7 +31,7 @@ kEndstopInversion = False
 kBucketSpeed = .5
 kIntakeSpeed = .8
 kOuttakeSpeed = .3
-kSwerveMinSpeed = .1
+kSwerveMinSpeed = .2
 kSwerveMaxSpeed = 1
 kSwerveMaxOutput = .8
 # MotorIDs

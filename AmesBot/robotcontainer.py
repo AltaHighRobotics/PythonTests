@@ -46,23 +46,13 @@ class RobotContainer:
         # State
         self.state = State(self.drive)
 
-        # Chooser
-        self.chooser = wpilib.SendableChooser()
-
-        # Add commands to the autonomous command chooser
-        self.chooser.setDefaultOption("Simple Auto", 'A')
-        self.chooser.addOption("Complex Auto", 'B')
-
-        # Put the chooser on the dashboard
-        wpilib.SmartDashboard.putData("Autonomous", self.chooser)
-
         self.configureButtonBindings()
         self.drive.setDefaultCommand(
             FODrive(self.drive,
                 self.driverController.getX, 
                 self.driverController.getY, 
                 self.driverController.getZ,
-                lambda: 1
+                lambda: (self.driverController.getRawAxis(3)+1)/2
                 )
         )
 
@@ -89,13 +79,16 @@ class RobotContainer:
         self.mapButton(1, 'Forward')
         self.mapButton(2, 'Back')
         self.mapButton(12, 'Drive Mode')
-        #self.mapButton(3, 'Out')
-        #self.mapButton(4, 'In')
+        self.mapButton(3, 'Out')
+        self.mapButton(4, 'In')
 
         # POV's
         self.mapPOV(0, 'Bucket')
         self.mapPOV(90, 'Plow')
         self.mapPOV(180, 'Intake')
+
+        # Shuffleboard
+        commands2.button.Trigger(self.state.isEndstopOverride).onTrue(commands2.cmd.runOnce(lambda: print("!!!ENDSTOPS OVERRIDDEN!!!")))
 
         # Endstops
         #self.mapEndstop(constants.kOutEndstopPort, "Out", constants.kEndstopInversion)
@@ -124,4 +117,4 @@ class RobotContainer:
         
         
     def getAutonomousCommand(self) -> str:
-        return self.chooser.getSelected()
+        return None

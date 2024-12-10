@@ -1,7 +1,10 @@
 import commands2
+import wpilib.shuffleboard
 import constants
 from wpilib.shuffleboard import Shuffleboard
 from subsystems.swerveDrive import SwerveDrive
+from wpilib import SmartDashboard
+import wpilib
 
 class State(commands2.Subsystem):
     def __init__(self, drive: SwerveDrive):
@@ -15,6 +18,7 @@ class State(commands2.Subsystem):
         self.intake = constants.kDefaultIntake # Desired state of intake (intake can't run if the bucket is out) 1: intaking, 0: idle, -1: outtake
         self.endstop = constants.kDefaultEndStop # 1: fully out, 0: middle, -1: fully in
         self.intaking = self.intake # 1: intaking, 0: idle, -1: outtake
+        self.endstopOverride = constants.kDefaultEndStopOverride # User can overide the endstops if they are not working 0: not overridden, 1 overridden
 
         self.drive = drive # drivetrain
 
@@ -22,8 +26,11 @@ class State(commands2.Subsystem):
         self.tab = Shuffleboard.getTab("State")
         # self.driveModeWidget = self.tab.add("Drive Mode", "Default").getEntry()
         # self.driveSidevWidget = self.tab.add("Drive Side", "Default").getEntry()
-        self.objectiveWidget = self.tab.add("I", "Default").getEntry()
-
+        self.objectiveWidget = self.tab.add("Objective", "Default").getEntry()
+        self.endstopOverrideWidget = wpilib.SendableChooser()
+        self.endstopOverrideWidget.setDefaultOption("OFF", False)
+        self.endstopOverrideWidget.addOption("ON", True)
+        self.tab.add("Endstop Override", self.endstopOverrideWidget)
     #def updateDriveSide(self):
        # print("updating")
         #self.drive.driveSide = self.driveSide
@@ -35,6 +42,10 @@ class State(commands2.Subsystem):
     #def isDriveHalfSpeed(self):
         #return self.halfSpeed != False
 
+    def isEndstopOverride(self):
+        self.endstopOverride = self.endstopOverrideWidget.getSelected()
+        return self.endstopOverride
+    
     def isExtending(self):
         return self.bucket == 1
 
@@ -60,7 +71,7 @@ class State(commands2.Subsystem):
             if pressed:
                 print("Button FWD")
                 if self.objective == "B": # Extend bucket
-                    if self.endstop != 1: # As long as the button hasn't hit the endstop, we can extend it
+                    if self.endstop != 1 or self.endstopOverride: # As long as the button hasn't hit the endstop, we can extend it
                         self.bucket = 1
                     else:
                         self.bucket = 0 # Don't move the bucket it we're at the stop
@@ -70,7 +81,7 @@ class State(commands2.Subsystem):
                     #                  actual intaking when the bucket is back)
                     self.bucket = -1
 
-                    if self.endstop == -1: # We can only intake if the bucket is all the way back
+                    if self.endstop == -1 or self.endstopOverride: # We can only intake if the bucket is all the way back
                         self.bucket = 0 # Stop the bucket
                         self.intaking = 1 # Actually run the intake
                     
@@ -92,7 +103,7 @@ class State(commands2.Subsystem):
             if pressed:
                 print("Button BACK")
                 if self.objective == "B": # Retract Bucket
-                 if self.endstop != -1: # Bottom endstop
+                 if self.endstop != -1 or self.endstopOverride: # Bottom endstop
                     self.bucket = -1
                  else:
                     self.bucket = 0
@@ -115,7 +126,7 @@ class State(commands2.Subsystem):
             #elif self.driveMode == "RO":
                 #self.driveMode = "FO" # FO is headless so we don't need to set the drive side   
         
-        elif button == "Out":
+        elif button == "Out" and not self.endstopOverride:
             if pressed:
                 self.bucket = 0 # Stop the bucket
                 self.endstop = 1 # Tell State the bucket is fully out
@@ -123,7 +134,7 @@ class State(commands2.Subsystem):
             else:
                 self.endstop = 0 # Tell State we're somewhere in the middle
 
-        elif button =="In":
+        elif button =="In" and not self.endstopOverride:
             if pressed:
                 self.bucket = 0 # Stop the bucket
                 self.endstop = -1 # Tell State that the bucket is fully in
