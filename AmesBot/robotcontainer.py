@@ -47,7 +47,7 @@ class RobotContainer:
         self.state = State()
 
         self.configureButtonBindings()
-        """self.drive.setDefaultCommand(
+        self.drive.setDefaultCommand(
             FODrive(self.drive,
                 self.driverController.getX, 
                 self.driverController.getY, 
@@ -55,7 +55,6 @@ class RobotContainer:
                 lambda: (-(self.driverController.getRawAxis(3))+1)/2
                 )
         )
-"""
         # set up default drive command
 
     def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a state change

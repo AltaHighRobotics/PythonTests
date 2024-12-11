@@ -117,6 +117,7 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
 
     def handleButton(self, button, pressed):
         if button == "Forward": # Run score subsytems to accomplish objective
+            print("forward")
             if pressed:
                 if self.objective == "B": # Extend bucket
                     if self.endstop != 1 or self.endstopOverride: # As long as the button hasn't hit the endstop, we can extend it
