@@ -2,6 +2,7 @@ import math
 
 # Input
 kDriverControllerPort = 0
+kDeadband = .2
 
 # States
 kDefaultObjective = "I"
@@ -25,9 +26,9 @@ kInEndstopPort = 2
 kEndstopInversion = True
 
 # Speeds
-kBucketSpeed = .8
-kIntakeSpeed = .8
-kOuttakeSpeed = .3
+kBucketSpeed = .9
+kIntakeSpeed = .7
+kOuttakeSpeed = .4
 kSwerveMinSpeed = .3
 kSwerveMaxSpeed = 1
 kSwerveMaxOutput = .8

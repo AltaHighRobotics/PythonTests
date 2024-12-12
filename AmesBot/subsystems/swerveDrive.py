@@ -65,6 +65,14 @@ class SwerveDrive(Subsystem):
         :param fieldRelative: Whether the provided x and y speeds are relative to the field.
         """
 
+        if abs(xSpeed) < constants.kDeadband:
+            xSpeed = 0
+        if abs(ySpeed) < constants.kDeadband:
+            ySpeed = 0
+        if abs(rot) < constants.kDeadband:
+            rot = 0 
+        else: rot -= math.copysign(.2,rot)
+        
         speed = max(constants.kSwerveMinSpeed, min(speed, constants.kSwerveMaxSpeed)) # Change the drive speed based on the position of the slider
 
         swerveModuleStates = self.kinematics.toSwerveModuleStates(   # Kinematics

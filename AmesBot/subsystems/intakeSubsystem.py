@@ -9,8 +9,8 @@ class IntakeSubsystem(Subsystem):
 
     def __init__(self) -> None:
         super().__init__()
-        self.motorLeft = ctre.WPI_VictorSPX(constants.kIntakeLID)
-        self.motorRight = ctre.WPI_VictorSPX(constants.kIntakeRID)
+        self.motorLeft = ctre.WPI_TalonFX(constants.kIntakeLID)
+        self.motorRight = ctre.WPI_TalonFX(constants.kIntakeRID)
         self.motorRight.setInverted(True)
         self.motors = wpilib.MotorControllerGroup(self.motorLeft, self.motorRight)
 
