@@ -1,3 +1,4 @@
+from pickle import FALSE
 from commands2 import Subsystem
 import constants
 
@@ -29,6 +30,8 @@ class SwerveDrive(Subsystem):
                                      constants.kTurnBLP, constants.kTurnBLI, constants.kTurnBLD)
         self.backRight = SwerveModule(constants.kBRDriveID, constants.kBRTurnID,
                                       constants.kTurnBRP, constants.kTurnBRI, constants.kTurnBRD)
+        
+        self.turnLock = False
         
         self.setMaxOutput(constants.kSwerveMaxOutput)
 
@@ -64,14 +67,17 @@ class SwerveDrive(Subsystem):
         :param speed: Speed scaler
         :param fieldRelative: Whether the provided x and y speeds are relative to the field.
         """
-
+        axes0 = 0
         if abs(xSpeed) < constants.kDeadband:
             xSpeed = 0
+            axes0 += 1
         if abs(ySpeed) < constants.kDeadband:
             ySpeed = 0
-        if abs(rot) < constants.kDeadband:
-            rot = 0 
-        else: rot -= math.copysign(.2,rot)
+            axes0 += 1
+        if abs(rot) < constants.kTurnDeadband or self.turnLock:
+            rot = 0
+            axes0 += 1 
+        else: rot -= math.copysign(constants.kTurnDeadband,rot) 
         
         speed = max(constants.kSwerveMinSpeed, min(speed, constants.kSwerveMaxSpeed)) # Change the drive speed based on the position of the slider
 
@@ -84,7 +90,12 @@ class SwerveDrive(Subsystem):
         )
 
         # self.pub.set([swerveModuleStates[0],swerveModuleStates[1],swerveModuleStates[2],swerveModuleStates[3]]) # AdvantageScope
-        
+        #print(axes0)
+        if axes0 == 3:
+            swerveModuleStates[0].angle = wpimath.geometry.Rotation2d(math.pi/4)
+            swerveModuleStates[1].angle = wpimath.geometry.Rotation2d(-math.pi/4)
+            swerveModuleStates[2].angle = wpimath.geometry.Rotation2d(-math.pi/4)
+            swerveModuleStates[3].angle = wpimath.geometry.Rotation2d(math.pi/4)
         # Set each swerve module to the state produced by the kinematics
         self.frontLeft.setDesiredState(swerveModuleStates[0])
         self.frontRight.setDesiredState(swerveModuleStates[1])
@@ -100,3 +111,9 @@ class SwerveDrive(Subsystem):
     
     def FOReset(self): # Set FO forward to the direction the plow is facing
         self.gyro.zeroYaw()
+
+    def lockTurn(self):
+        self.turnLock = True
+
+    def unlockTurn(self):
+        self.turnLock = False

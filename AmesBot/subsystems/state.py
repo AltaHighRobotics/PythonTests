@@ -78,8 +78,10 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
             Finally, if you want to display certain states, create an updateWidgets
             function that refreshes the widgets and put it in the handleButton function
     """
-    def __init__(self):
+    def __init__(self, drive: SwerveDrive):
         super().__init__()
+
+        self.drive = drive
 
         self.objective = constants.kDefaultObjective # "P": plow, "I": intake, "B": bucket
         self.bucket = constants.kDefaultBucket # 1: moving out, 0: idle, -1: moving in
@@ -139,12 +141,15 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
 
         elif button  == "Bucket" and pressed:
             self.objective = "B"
+            self.drive.unlockTurn()
 
         elif button == "Plow" and pressed:
             self.objective = "P"
+            self.drive.lockTurn()
 
         elif button == "Intake" and pressed:
             self.objective = "I"
+            self.drive.unlockTurn()
 
         elif button == "Back": # Run score subsystems to accomplish objective
             if pressed:

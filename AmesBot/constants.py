@@ -3,6 +3,7 @@ import math
 # Input
 kDriverControllerPort = 0
 kDeadband = .2
+kTurnDeadband = .5
 
 # States
 kDefaultObjective = "I"
@@ -27,7 +28,7 @@ kEndstopInversion = True
 
 # Speeds
 kBucketSpeed = .9
-kIntakeSpeed = .7
+kIntakeSpeed = .9
 kOuttakeSpeed = .4
 kSwerveMinSpeed = .3
 kSwerveMaxSpeed = 1
@@ -58,9 +59,9 @@ kBRTurnID = 8
 
 # Turn PID
 # Front Left
-kTurnFLP = 10
+kTurnFLP = 13
 kTurnFLI = 0
-kTurnFLD = .1
+kTurnFLD = .3
 
 # Front Right
 kTurnFRP = kTurnFLP + 0

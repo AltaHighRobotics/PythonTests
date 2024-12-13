@@ -44,7 +44,7 @@ class RobotContainer:
         self.intake = IntakeSubsystem()
 
         # State
-        self.state = State()
+        self.state = State(self.drive)
 
         self.configureButtonBindings()
         self.drive.setDefaultCommand(
