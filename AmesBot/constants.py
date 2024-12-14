@@ -28,11 +28,11 @@ kEndstopInversion = True
 
 # Speeds
 kBucketSpeed = .9
-kIntakeSpeed = .9
+kIntakeSpeed = .8
 kOuttakeSpeed = .4
 kSwerveMinSpeed = .3
 kSwerveMaxSpeed = 1
-kSwerveMaxOutput = .8
+kSwerveMaxOutput = .7
 # MotorIDs
 # Bucket
 kBucketID = 9

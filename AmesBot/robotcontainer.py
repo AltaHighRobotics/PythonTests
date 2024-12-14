@@ -4,11 +4,14 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
+from typing import Any
 from subsystems.intakeSubsystem import IntakeSubsystem
 from commands.bucketCommand import Extend 
 from commands.bucketCommand import Retract
 from commands.intakeCommand import Intake, Outtake 
+from commands.auto import AutonomusCommand
 import wpilib
+import wpilib.shuffleboard
 from wpilib.interfaces import GenericHID
 
 import commands2
@@ -45,6 +48,11 @@ class RobotContainer:
 
         # State
         self.state = State(self.drive)
+
+        self.autoChooser = wpilib.SendableChooser()
+        self.autoChooser.setDefaultOption("ON", AutonomusCommand(self.drive, 2))
+        self.autoChooser.addOption("OFF", None)
+        wpilib.shuffleboard.Shuffleboard.getTab("State").add("Auto", self.autoChooser)
 
         self.configureButtonBindings()
         self.drive.setDefaultCommand(
@@ -101,5 +109,5 @@ class RobotContainer:
         commands2.button.JoystickButton(self.driverController, 5).onTrue(commands2.cmd.runOnce(lambda: self.drive.FOReset(), self.drive))
         
         
-    def getAutonomousCommand(self) -> str:
-        return None
+    def getAutonomousCommand(self):
+        return self.autoChooser.getSelected()
