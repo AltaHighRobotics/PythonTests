@@ -21,6 +21,7 @@ kSwerveTurnGearRatio = 1/37
 kSwerveModCtrToCtr = .635
 kWheelRadius = 0.0508
 
+
 # Enstops
 kOutEndstopPort = 3
 kInEndstopPort = 2
@@ -32,7 +33,7 @@ kIntakeSpeed = .8
 kOuttakeSpeed = .4
 kSwerveMinSpeed = .3
 kSwerveMaxSpeed = 1
-kSwerveMaxOutput = .7
+kSwerveMaxOutput = .8
 # MotorIDs
 # Bucket
 kBucketID = 9
