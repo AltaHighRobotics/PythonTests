@@ -15,10 +15,10 @@ import constants
 class DriveSubsystem(commands2.Subsystem):
     def __init__(self) -> None:
         super().__init__() 
-        self.left1 = ctre.WPI_VictorSPX(constants.kLeftMotor1ID)
-        self.left2 = ctre.WPI_VictorSPX(constants.kLeftMotor2ID)
-        self.right1 = ctre.WPI_VictorSPX(constants.kRightMotor1ID)
-        self.right2 = ctre.WPI_VictorSPX(constants.kRightMotor2ID)
+        self.left1 = ctre.WPI_TalonFX(constants.kLeftMotor1ID)
+        self.left2 = ctre.WPI_TalonFX(constants.kLeftMotor2ID)
+        self.right1 = ctre.WPI_TalonFX(constants.kRightMotor1ID)
+        self.right2 = ctre.WPI_TalonFX(constants.kRightMotor2ID)
 
         self.left1.setNeutralMode(ctre.NeutralMode.Brake)
         self.left2.setNeutralMode(ctre.NeutralMode.Brake)
