@@ -38,7 +38,7 @@ class RobotContainer:
                 lambda: 1
             )
         )
-        commands2.button.JoystickButton(self.driverController, 5).or_(commands2.button.JoystickButton(self.driverController, 6)).whileTrue(Boost(self.drive))
+        commands2.button.JoystickButton(self.driverController, 1).or_(commands2.button.JoystickButton(self.driverController, 6)).whileTrue(Boost(self.drive))
 
     def getAutonomousCommand(self) -> str:
         return self.chooser.getSelected()

@@ -28,14 +28,14 @@ class DriveSubsystem(commands2.Subsystem):
         self.left = wpilib.MotorControllerGroup(self.left1, self.left2)
         self.right = wpilib.MotorControllerGroup(self.right1, self.right2)
 
-        self.left.setInverted(True)
+        self.right.setInverted(True)
         # The robot's drive
         self.drive = wpilib.drive.DifferentialDrive(
             self.left,
             self.right,
             )
         self.maxOut = .5
-        self.drive.setMaxOutput(.5)
+        self.setMaxOutput(.5)
 
     def arcadeDrive(self, fwd: float, rot: float) -> None:
         """
@@ -45,7 +45,7 @@ class DriveSubsystem(commands2.Subsystem):
         :param rot: the commanded rotation
         """
 
-        self.drive.arcadeDrive(fwd, rot)
+        self.drive.arcadeDrive(fwd, -rot)
 
     def setMaxOutput(self, maxOutput: float):
         """

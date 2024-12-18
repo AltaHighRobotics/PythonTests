@@ -66,7 +66,7 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
         commands2.button.Trigger(self.state.isOutaking).whileTrue(<outtake command>)
 
             NOTE that there must be a defined default state. This is because the bindings
-        only trigger things when their values change (e.g. a button is pressed or a state changes),
+        only trigger things when their values CHANGE (e.g. a button is pressed or a state changes),
         so you need to set a default command for things you want to run when the robot is 
         started in teleop (e.g. drivetrain)
 
@@ -76,7 +76,7 @@ def mapButton(self, button, stateTrigger): # Maps a physical button to trigger a
         theoretically serves as a failsafe is you mess something up in state.
 
             Finally, if you want to display certain states, create an updateWidgets
-            function that refreshes the widgets and put it in the handleButton function
+        function that refreshes the widgets and put it in the handleButton function
     """
     def __init__(self, drive: SwerveDrive):
         super().__init__()
