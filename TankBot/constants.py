@@ -18,4 +18,6 @@ kRightMotor2ID = 4
 
 # Operator Interface
 kDriverControllerPort = 0
+kBoostSpeed = .7
+kRegSpeed = .4
 

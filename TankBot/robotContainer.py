@@ -23,22 +23,31 @@ class RobotContainer:
 
     def __init__(self) -> None:
         # The driver's controller
-        self.driverController = wpilib.XboxController(constants.kDriverControllerPort)
-        #self.driverController = wpilib.Joystick(constants.kDriverControllerPort)
+        #self.driverController = wpilib.XboxController(constants.kDriverControllerPort)
+        self.driverController = wpilib.Joystick(constants.kDriverControllerPort)
 
         # The robot's subsystems
         self.drive = DriveSubsystem()
 
         # set up default drive command
-        self.drive.setDefaultCommand(
+        """self.drive.setDefaultCommand( # Xbox
             DefaultDrive(
                 self.drive,
                 lambda: self.driverController.getRightTriggerAxis() - self.driverController.getLeftTriggerAxis(),
                 lambda: min(1, max(-1, self.driverController.getLeftX() + self.driverController.getRightX())),
                 lambda: 1
             )
+        )"""
+        self.drive.setDefaultCommand( # Flight Stick
+            DefaultDrive(
+                self.drive,
+                lambda: self.driverController.getY(),
+                lambda: self.driverController.getZ(),
+                lambda: 1
+            )
         )
-        commands2.button.JoystickButton(self.driverController, 5).or_(commands2.button.JoystickButton(self.driverController, 6)).whileTrue(Boost(self.drive))
+        #commands2.button.JoystickButton(self.driverController, 5).or_(commands2.button.JoystickButton(self.driverController, 6)).whileTrue(Boost(self.drive)) # Xbox
+        commands2.button.JoystickButton(self.driverController, 1).whileTrue(Boost(self.drive))
 
     def getAutonomousCommand(self) -> str:
         return self.chooser.getSelected()

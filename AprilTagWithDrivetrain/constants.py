@@ -20,4 +20,5 @@ kRightMotor2ID = 4
 kDriverControllerPort = 0
 kRegSpeed = .5
 kBoostSpeed = .9
+kCamName = "camera1"
 

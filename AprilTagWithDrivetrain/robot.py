@@ -6,6 +6,7 @@
 #
 
 import commands2
+from photonlibpy.photonCamera import PhotonCamera
 
 from robotContainer import RobotContainer
 class MyRobot(commands2.TimedCommandRobot):
