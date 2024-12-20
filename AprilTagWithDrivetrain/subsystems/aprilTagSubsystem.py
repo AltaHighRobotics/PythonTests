@@ -12,3 +12,11 @@ class AprilTagSubsystem(Subsystem):
         if result.hasTargets():
             return result.getTargets()
         else: return None
+    
+    def hasTarget(self, id: int) -> bool:
+        targets = self.getTargets()
+        if targets is not None:
+            for target in targets:
+                if target.getFiducialId() == id:
+                    return True
+        return False

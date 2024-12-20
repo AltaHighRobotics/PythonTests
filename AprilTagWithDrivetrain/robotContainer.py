@@ -5,12 +5,12 @@
 #
 
 import wpilib
+from subsystems.aprilTagSubsystem import AprilTagSubsystem
 from commands.Boost import Boost
 
 import constants
 
 from commands.defaultDrive import DefaultDrive
-
 from subsystems.driveSubsystem import DriveSubsystem
 import commands2
 class RobotContainer:
@@ -29,6 +29,9 @@ class RobotContainer:
         # The robot's subsystems
         self.drive = DriveSubsystem()
 
+        # apriltags
+        self.vision = AprilTagSubsystem()
+
         # set up default drive command
         self.drive.setDefaultCommand(
             DefaultDrive(
@@ -39,6 +42,6 @@ class RobotContainer:
             )
         )
         commands2.button.JoystickButton(self.driverController, 5).or_(commands2.button.JoystickButton(self.driverController, 6)).whileTrue(Boost(self.drive))
-
+        commands2.button.Trigger(lambda: self.vision.hasTarget(1)).onTrue(self.drive.arcadeDrive(.3, 0))
     def getAutonomousCommand(self) -> str:
         return self.chooser.getSelected()
