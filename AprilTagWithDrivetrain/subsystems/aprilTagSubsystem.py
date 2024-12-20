@@ -20,3 +20,11 @@ class AprilTagSubsystem(Subsystem):
                 if target.getFiducialId() == id:
                     return True
         return False
+    
+    def getTargetSteer(self, id:int):
+        targets = self.getTargets()
+        if targets is not None:
+            for target in targets:
+                if target.getFiducialId() == id:
+                    return target.getYaw()/30
+        return 0
