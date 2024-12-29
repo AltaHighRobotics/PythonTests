@@ -11,6 +11,7 @@ class AprilTagSubsystem(Subsystem): # Apriltags with PhotonVision
         self.cam = PhotonCamera(constants.kCamName)
         self.flagOn = False
         self.flag = None
+        self.targets = []
 
     def getHighestID(self, targets: list[PhotonTrackedTarget]) -> PhotonTrackedTarget: # get the target with the highest fiducial ID
         bestTarget = targets[0]
@@ -19,14 +20,15 @@ class AprilTagSubsystem(Subsystem): # Apriltags with PhotonVision
                 bestTarget = target
         return bestTarget
 
-    def getTargets(self) -> list[PhotonTrackedTarget]: # Get latest target data
+    def refresh(self) -> list[PhotonTrackedTarget]: # Get latest target data
         result = self.cam.getLatestResult()
         if result.hasTargets():
-            return result.getTargets()
+            self.targets = result.getTargets()
+            return self.targets
         else: return None
     
     def hasTarget(self, id: int = None) -> bool: # See if a target with a given fiducial is visible. Run with no args to see if any targets are visible
-        targets = self.getTargets()
+        targets = self.targets
         if targets is not None:
             if id is not None: 
                 for target in targets:
@@ -36,7 +38,7 @@ class AprilTagSubsystem(Subsystem): # Apriltags with PhotonVision
         return False # No targets
     
     def getTargetSteer(self, id:int): # Get a steer value to steer the bot towards a target
-        targets = self.getTargets()
+        targets = self.targets
         if targets is not None:
             for target in targets:
                 if target.getFiducialId() == id:
