@@ -9,7 +9,7 @@ import wpilib
 class State(commands2.Subsystem):
     """
     A virtural machine for controlling command-based FRC robots
-    Created by Shayden Jennings in 2024, team 4598
+    Created by Shayden Jennings in 2024, team 4598. Version 1.0
     
     Usage:
         All buttons are mapped to virtual buttons. By doing this, we can
