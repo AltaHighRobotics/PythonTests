@@ -6,9 +6,9 @@
 #
 
 import commands2
-from photonlibpy.photonCamera import PhotonCamera
 
 from robotContainer import RobotContainer
+
 class MyRobot(commands2.TimedCommandRobot):
     """
     Command v2 robots are encouraged to inherit from TimedCommandRobot, which
@@ -23,4 +23,3 @@ class MyRobot(commands2.TimedCommandRobot):
         # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         # autonomous chooser on the dashboard.
         self.container = RobotContainer()
-        #wpilib.CameraServer.launch("vision.py")

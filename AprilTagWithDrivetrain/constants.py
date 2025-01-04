@@ -15,6 +15,10 @@ kLeftMotor2ID = 2
 kRightMotor1ID = 3
 kRightMotor2ID = 4
 
+# Auto Align
+kAutoAlignP = 0
+kAutoAlignI = 0
+kAutoAlignD = 0
 
 # Operator Interface
 kDriverControllerPort = 0

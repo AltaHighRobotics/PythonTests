@@ -37,12 +37,12 @@ class AprilTagSubsystem(Subsystem): # Apriltags with PhotonVision
             else: return True # If no id is given and we have targets
         return False # No targets
     
-    def getTargetSteer(self, id:int): # Get a steer value to steer the bot towards a target
+    def getTargetYaw(self, id:int): # Get the angle of the target so we can steer towards it
         targets = self.targets
         if targets is not None:
             for target in targets:
                 if target.getFiducialId() == id:
-                    return target.getYaw()/30
+                    return target.getYaw()
         return 0
     
     def setFlag(self, flag: Flag):

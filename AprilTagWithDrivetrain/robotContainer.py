@@ -6,7 +6,8 @@
 
 import wpilib
 from subsystems.aprilTagSubsystem import AprilTagSubsystem
-from commands.Boost import Boost
+from commands.boost import Boost
+from commands.autoAlign import AutoAlign
 
 import constants
 
@@ -41,7 +42,9 @@ class RobotContainer:
                 lambda: 1
             )
         )
+
         commands2.button.JoystickButton(self.driverController, 5).or_(commands2.button.JoystickButton(self.driverController, 6)).whileTrue(Boost(self.drive))
-        commands2.button.Trigger(lambda: self.vision.hasTarget(1)).and_(commands2.button.JoystickButton(self.driverController, 1)).whileTrue(DefaultDrive(self.drive, lambda: self.driverController.getRightTriggerAxis() - self.driverController.getLeftTriggerAxis(), lambda: self.vision.getTargetSteer(1), lambda: 1))
+        commands2.button.Trigger(lambda: self.vision.hasTarget(1)).whileTrue(AutoAlign(self.drive, self.vision, lambda: self.driverController.getRightTriggerAxis() - self.driverController.getLeftTriggerAxis(), lambda: self.driverController.getRightX() + self.driverController.getLeftX(), 1))
+   
     def getAutonomousCommand(self) -> str:
-        return self.chooser.getSelected()
+        return "none"
