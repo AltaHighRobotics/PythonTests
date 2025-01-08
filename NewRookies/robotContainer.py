@@ -4,7 +4,7 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 from commands.forward import DefaultDrive
-from subsytems.driverSubsystem import DriveSubsystems
+from subsystems.driveSubsystem import DriveSubsystems
 import constants
 import wpilib
 from commands.Dance import Dance
